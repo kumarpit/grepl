@@ -1,3 +1,3 @@
-module github.com/gogrep
+module github.com/kumarpit/gogrep
 
 go 1.18
