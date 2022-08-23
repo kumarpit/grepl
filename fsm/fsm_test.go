@@ -19,14 +19,14 @@ var (
 	invalid = "foo"
 )
 
-func Test(t *testing.T) {
+func TestFSM(t *testing.T) {
 	initial := openState
-	machine, err := New(inital, []Transition {
+	machine := New(initial, []Transition {
 		{event: open, source: closedState, nextState: openState},
 		{event: close, source: openState, nextState: closedState},
-		{event: kick, source: closedState, nextState: brokenState}
+		{event: kick, source: closedState, nextState: brokenState},
 	})
-	assert.NoError(t, err)
-	result := machine.Run([]string{close, open, close})
-	assert.True(t, result)
+	
+	result := machine.Run([]string{close, open, close, kick})
+	assert.False(t, result)
 }
