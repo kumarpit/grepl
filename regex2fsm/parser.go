@@ -10,6 +10,12 @@ type Parser struct {
 	stateGenerator fsm.StateGenerator
 }
 
+func New() *Parser {
+	return &Parser{
+		stateGenerator: &fsm.stateGenerator{},
+	}
+}
+
 func (p Parser) getNextState(isAccepting bool) fsm.State {
 	if isAccepting {
 		return p.stateGenerator.NextAccepting()
@@ -30,7 +36,7 @@ func (p Parser) Convert(pattern string) (*fsm.StateMachine, error) {
 	return fsm.New(initialState, transitions), nil
 }
 
-func (p Parser) parseTree(currentState fsm.State, tree *syntax.Regexp, isAccepting bool) []fsm.Transition {
+func (p Parser) ParseTree(currentState fsm.State, tree *syntax.Regexp, isAccepting bool) []fsm.Transition {
 	switch tree.Op {
 	case syntax.OpAlternate:
 		return g.ParseAlternate(currentState, tree, isAccepting)

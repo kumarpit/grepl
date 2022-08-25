@@ -36,7 +36,6 @@ func (g Parser) ParseStar(currentState fsm.State, star *syntax.Regexp, isAccepti
 	if isAccepting {
 		currentState = currentState.MakeAccepting()
 	}
-
 	nextState := g.getNextState(isAccepting);
 
 	return []fsm.transitions {
@@ -49,19 +48,40 @@ func (g Parser) ParseStar(currentState fsm.State, star *syntax.Regexp, isAccepti
 			event: string(star.Sub[0].Rune[0]),
 			source: nextState,
 			nextState: nextState,
-		}
+		},
 	}
 }
 
 // one or more
 func (g Parser) ParsePlus(currentState fsm.State, plus *syntax.Regexp, isAccepting bool) []fsm.Transition {
-	return nil;
+	nextState := g.getNextState(isAccepting)
+	return []fsm.transition {
+		{
+			event: string(plus.Sub[0].Rune[0]),
+			source: currentState,
+			nextState: nextState,
+		},
+		{
+			event: string(plus.Sub[0].Rune[0]),
+			source: nextState,
+			nextState: nextState,
+		},
+	}
 }
 
 func (g Parser) ParseConcat(currentState fsm.State, concat *syntax.Regexp, isAccepting bool) []fsm.Transition {
-	return nil
+	source := currentState
+	transitions := []fsm.transition{}
+	for i, exp := range concat.Sub {
+		isLast := i == len(concat.Sub) - 1
+		subTransitions := g.ParseTree(source, exp, isAccepting && isLast)
+		source = subTransitions[len(subTransitions) - 1].nextState
+		transitions = append(transitions, subTransitions...)
+	}
+
+	return transitions
 }
 
 func (g Parser) ParseCharClass(currentState fsm.State, charClass *syntax.Regexp, isAccepting bool) []fsm.Transition {
-	return nil
+	
 }
