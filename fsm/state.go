@@ -19,7 +19,7 @@ func NewState(value string) State {
 	}
 }
 
-func MakeAccepting(state State) State {
+func (state State) MakeAccepting() State {
 	return NewAcceptingState(state.Value())
 }
 

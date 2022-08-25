@@ -3,6 +3,7 @@ package regex2fsm
 import (
 	"github.com/kumarpit/grepl/fsm"
 	"regexp/syntax"
+	"fmt"
 )
 
 type Parser struct {
@@ -30,5 +31,26 @@ func (p Parser) Convert(pattern string) (*fsm.StateMachine, error) {
 }
 
 func (p Parser) parseTree(currentState fsm.State, tree *syntax.Regexp, isAccepting bool) []fsm.Transition {
-	return nil
+	switch tree.Op {
+	case syntax.OpAlternate:
+		return g.ParseAlternate(currentState, tree, isAccepting)
+	
+	case syntax.OpLiteral:
+		return g.ParseLiteral(currentState, tree, isAccepting)
+	
+	case syntax.OpStar:
+		return g.ParseStar(currentState, tree, isAccepting)
+	
+	case syntax.OpPlus:
+		return g.ParsePlus(currentState, tree, isAccepting)
+
+	case syntax.OpConcat:
+		return g.ParseConcat(currentState, tree, isAccepting)
+
+	case syntax.OpCharClass:
+		return g.ParseCharClass(currentState, tree, isAccepting)
+
+	default:
+		panic(fmt.Sprintf("unsupported operation: %s", tree.op))
+	}
 }
