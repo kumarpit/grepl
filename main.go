@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/kumarpit/grepl/regex2fsm"
-	"github.com/kumarpit/grepl/fsm"
 	"strings"
+	"os"
+	"log"
 )
 
 func main() {
@@ -14,12 +15,12 @@ func main() {
 	text := os.Args[2]
 
 	converter := regex2fsm.New()
-	machine, err := converter.convert(pattern)
+	machine, err := converter.Convert(pattern)
 	if err != nil {
 		log.Fatal(err)
 	}
 	
-	result := machine.Run(strings.split(text, ""))
+	result := machine.Run(strings.Split(text, ""))
 
-	fmt.Println("%d", result)
+	fmt.Println(result)
 }	
