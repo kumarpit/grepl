@@ -1,9 +1,9 @@
 package fsm
 
 type Transition struct {
-	event string
-	source State
-	nextState State
+	Event string
+	Source State
+	NextState State
 }
 
 type StateMachine struct {
@@ -26,7 +26,7 @@ func (m *StateMachine) Run(events []string) bool {
 		if transition == nil {
 			break
 		}
-		m.currentState = transition.nextState
+		m.currentState = transition.NextState
 	}
 
 	return m.currentState.Accepting()
@@ -38,7 +38,7 @@ func (m *StateMachine) Reset() {
 
 func (m *StateMachine) findTransition(event string) *Transition {
 	for _, t := range m.transitions {
-		if t.source.Equal(m.currentState) && t.event == event {
+		if t.Source.Equal(m.currentState) && t.Event == event {
 			return &t
 		}	
 	}

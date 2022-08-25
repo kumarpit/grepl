@@ -12,7 +12,8 @@ type Parser struct {
 
 func New() *Parser {
 	return &Parser{
-		stateGenerator: &fsm.stateGenerator{},
+		// !!!
+		stateGenerator: fsm.NumericStateGenerator{},
 	}
 }
 
@@ -31,7 +32,7 @@ func (p Parser) Convert(pattern string) (*fsm.StateMachine, error) {
 	}
 
 	initialState := p.stateGenerator.Next()
-	transitions  := p.parseTree(initialState, regexTree, true)
+	transitions  := p.ParseTree(initialState, regexTree, true)
 
 	return fsm.New(initialState, transitions), nil
 }
@@ -39,24 +40,24 @@ func (p Parser) Convert(pattern string) (*fsm.StateMachine, error) {
 func (p Parser) ParseTree(currentState fsm.State, tree *syntax.Regexp, isAccepting bool) []fsm.Transition {
 	switch tree.Op {
 	case syntax.OpAlternate:
-		return g.ParseAlternate(currentState, tree, isAccepting)
+		return p.ParseAlternate(currentState, tree, isAccepting)
 	
 	case syntax.OpLiteral:
-		return g.ParseLiteral(currentState, tree, isAccepting)
+		return p.ParseLiteral(currentState, tree, isAccepting)
 	
 	case syntax.OpStar:
-		return g.ParseStar(currentState, tree, isAccepting)
+		return p.ParseStar(currentState, tree, isAccepting)
 	
 	case syntax.OpPlus:
-		return g.ParsePlus(currentState, tree, isAccepting)
+		return p.ParsePlus(currentState, tree, isAccepting)
 
 	case syntax.OpConcat:
-		return g.ParseConcat(currentState, tree, isAccepting)
+		return p.ParseConcat(currentState, tree, isAccepting)
 
 	case syntax.OpCharClass:
-		return g.ParseCharClass(currentState, tree, isAccepting)
+		return p.ParseCharClass(currentState, tree, isAccepting)
 
 	default:
-		panic(fmt.Sprintf("unsupported operation: %s", tree.op))
+		panic(fmt.Sprintf("unsupported operation: %s", tree.Op))
 	}
 }
