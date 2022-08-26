@@ -24,6 +24,7 @@ func (m *StateMachine) Run(events []string) bool {
 	for _, event := range events {
 		transition := m.findTransition(event)
 		if transition == nil {
+			// put machine in non-accepting state if transition is invalid
 			break
 		}
 		m.currentState = transition.NextState

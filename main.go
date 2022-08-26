@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/kumarpit/grepl/regex2fsm"
 	"strings"
 	"os"
 	"log"
 	"bufio"
+
+	"github.com/kumarpit/grepl/regex2fsm"
+	// "github.com/kumarpit/grepl/pfiles"
 )
 
 func main() {
-	// fmt.Println("This is grep(l)")
-
 	pattern := os.Args[1]
 	filename := os.Args[2]
 
@@ -43,4 +43,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// result := pfiles.GetFiles(filename)
+	// fmt.Println(result)
 }	

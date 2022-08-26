@@ -1,25 +1,17 @@
-package main
+package pfiles
 
 import (
-	
-	
-	"fmt"
-	
 	"os"
+	"strings"
 	"path/filepath"
-	
-	// "golang.org/x/net/context"
-	"golang.org/x/sync/errgroup"
 )
 
-var g errgroup.Group
-
-// run grepl parallely on multiple files
-func main() {
+// recursively find all .txt files
+func GetFiles(root string) []string {
 	paths := make(chan string, 100)
-	root := os.Args[1]
-	
-	g.Go(func() error {
+	list := []string{}
+
+	go func() error {
 		defer close(paths)
 
 		return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -29,16 +21,20 @@ func main() {
 			if !info.Mode().IsRegular() {
 				return nil
 			}
+			if !info.IsDir() && !strings.HasSuffix(info.Name(), ".txt") {
+				return nil
+			}
 
 			select {
 			case paths <- path:
 				return nil
 			}
 		})
-	})
+	}()
 
-	// c := make(chan string, 100)
 	for path := range paths {
-		fmt.Println(path)
+		list = append(list, path)
 	}
-} 
+
+	return list
+}
