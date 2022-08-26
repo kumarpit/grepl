@@ -7,7 +7,7 @@ import (
 )
 
 // recursively find all .txt files
-func GetFiles(root string) []string {
+func GetPaths(root string) []string {
 	paths := make(chan string, 100)
 	list := []string{}
 
