@@ -69,6 +69,7 @@ func (g Parser) ParsePlus(currentState fsm.State, plus *syntax.Regexp, isAccepti
 	}
 }
 
+// does not support concatenation of alternate yet
 func (g Parser) ParseConcat(currentState fsm.State, concat *syntax.Regexp, isAccepting bool) []fsm.Transition {
 	source := currentState
 	transitions := []fsm.Transition{}

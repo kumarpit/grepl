@@ -6,13 +6,14 @@ import (
 	"strings"
 	"os"
 	"log"
+	"bufio"
 )
 
 func main() {
-	fmt.Println("This is grep(l)")
+	// fmt.Println("This is grep(l)")
 
 	pattern := os.Args[1]
-	text := os.Args[2]
+	filename := os.Args[2]
 
 	converter := regex2fsm.New()
 	machine, err := converter.Convert(pattern)
@@ -20,7 +21,26 @@ func main() {
 		log.Fatal(err)
 	}
 	
-	result := machine.Run(strings.Split(text, ""))
+	// search in file
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
 
-	fmt.Println(result)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		tokens := strings.Split(line, "")
+		result := machine.Run(tokens)
+		if result {
+			fmt.Println(line)
+		}
+		machine.Reset()
+	}
+
+	err = scanner.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
 }	
