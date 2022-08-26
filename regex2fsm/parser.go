@@ -12,7 +12,6 @@ type Parser struct {
 
 func New() *Parser {
 	return &Parser{
-		// !!!
 		stateGenerator: &fsm.NumericStateGenerator{},
 	}
 }
