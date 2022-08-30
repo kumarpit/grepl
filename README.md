@@ -5,7 +5,7 @@ Grepl is a Grep-like command line utility built as a personal exercise in Go dev
 - Install Golang by following [these steps](https://go.dev/doc/install)
 - Clone this repository into an empty directory using `git clone https://github.com/kumarpit/grepl.git`
 - Install all dependencies using `go get ./..`
-- Run the program by running `go run . "hello" .`
+- Run the program using `go run . "hello" .`
 
 # Usage
 ```golang
