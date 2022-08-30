@@ -1,5 +1,5 @@
 # Grepl
-Grepl is a Grep-like command line utility built as a personal exercise in Go development. Implementation is based on [this](https://willdemaine.ghost.io/grep-from-first-principles-in-golang/) artcile by Will Demaine. You can read more about the motivation behind this project and my learnings [here](https://kumarpit.github.io/grepl).
+Grepl is a Grep-like command line utility built as a personal exercise in Go development. Implementation is based on [this](https://willdemaine.ghost.io/grep-from-first-principles-in-golang/) article by Will Demaine. You can read more about the motivation behind this project and my learnings [here](https://kumarpit.github.io/grepl).
 
 # Getting Started
 - Install Golang by following [these steps](https://go.dev/doc/install)
