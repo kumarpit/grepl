@@ -25,6 +25,8 @@ func GetPaths(root string) []string {
 				return nil
 			}
 
+			path = strings.Replace(path, "\\", "/", -1)
+
 			select {
 			case paths <- path:
 				return nil

@@ -22,9 +22,9 @@ var (
 func TestFSM(t *testing.T) {
 	initial := openState
 	machine := New(initial, []Transition {
-		{event: open, source: closedState, nextState: openState},
-		{event: close, source: openState, nextState: closedState},
-		{event: kick, source: closedState, nextState: brokenState},
+		{Event: open, Source: closedState, NextState: openState},
+		{Event: close, Source: openState, NextState: closedState},
+		{Event: kick, Source: closedState, NextState: brokenState},
 	})
 	
 	result := machine.Run([]string{close, open, close, kick})
